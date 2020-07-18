@@ -1,147 +1,26 @@
-<script>
-
-window.$ = function (selector) {
-  return document.querySelector(selector);
-}
-
-let que = ""
-
-let 论述 = [ 
-    "现在， 解决que的问题， 是非常非常重要的。 所以，  ",
-    "你之所以会问出que这种问题， 就是因为你上课没有认真思考。 ",
-    "而que， 这个问题并不重要， 更加重要的问题是，  ",
-    "que， 到底应该如何解决呢？ ",
-    "所以，我们再来审视一下que。 ",
-    "面对这类问题， 我们只需要抓住问题的关键， 问题就能迎刃而解。 ",
-    "再来看一下， que， 这个问题的关键究竟是什么? ",	
-	"综上， 正确答案显而易见， 不用她告诉你了吧？ ",
-    "那么，  ",
-	"第一步，  ",
-	"第二步，  ",
-	"还有一点，  ",
-]
-
-let 名人名言 = [
-    "大人物曾经说过， 如果一个学生能够充分尊重老师的课件， 他就不会问出那些问题。她说的对吗？ ",
-    "大人物曾经说过， 如果你能做梦， 你就能实现它。如果你肯努力， 你就能成功。如果没有， 下次一定。她说的对吗？ ",
-    "大人物曾经说过， 如果你没努力， 考了很高的分数， 那么你下次一定考不好。她说的对吗？ ",
-	"大人物曾经说过， 上课要认真听讲。",
-	"你上课不认真听讲， 下课来找她问问题， 显得很好学一样！",
-	"她ppt做的这么认真， 难道你还不会做吗？ ",
-	"大家都听得好好的， 怎么就你有问题， 啊？ ",
-	"大人物说了， 上课要记好笔记， 课后勤于整理， 才能像董桌琪一样优秀。她说的对吗？ ",
-	"这个问题你问过她几次了， 啊？",
-	"这个问题她曾经说过，你不要上课了！",
-	"一天到晚一直在问， 滚出去！",
-	"站起来， 出去！",
-	"嘿， 听到没有！",
-	"大人物曾经说过， 你只需要对这个问题稍加思考， 就能够得到正确答案。 ",
-	"这个问题，你只需要看看她的课件就能轻松解决，  ",
-	"学学人家董桌琪，从来不提问，但人家比你不知道高到哪里去了。  ",
-]
-
-let 后面垫话 = [
-    "她说的对吗 ",
-    "你觉得她说的有没有道理 ",
-    "对不对  ",
-    "没错吧 ",
-    
-]
-
-let 前面垫话 = [
-    "说过",
-    "在课上这样说过",
-	"在刚刚讲过",
-	"在一次课间说过",
-	"有一次说过，具体什么时间额，她记不太清了",
-	
-]
-
-let 大人物 = [
-    "英语教师李玲",
-    "李玲老师",
-	"年级主任李玲教师",
-	"李玲教授",
-	"英语教研组长李玲",
-	
-]
-
-function randomsen(列表){
-    let 坐标 = Math.floor( Math.random() * 列表.length );
-    return 列表[坐标];
-}
-
-function randomnum(min = 0,max = 100){
-    let num = Math.random()*( max - min ) + min;
-    return num;
-}
-
-function 来点名人名言(){
-    let 名言 = randomsen(名人名言)
-    名言 = 名言.replace("曾经说过", randomsen(前面垫话) )
-    名言 = 名言.replace("她说的对吗", randomsen(后面垫话) )
-	名言 = 名言.replace("大人物", randomsen(大人物) )
-    return 名言
-}
-
-function 来点论述(){
-    let 句子 = randomsen(论述);
-    句子 = 句子.replace(RegExp("que", "g"),que);
-    return 句子;
-}
-
-function 增加段落(章节){
-    if(章节[章节.length-1] === " "){
-        章节 = 章节.slice(0,-2)
-    }
-    return "　　" + 章节 + "。 "
-}
-
-function 生成文章(){
-	que = $('input').value
-    let 文章 = [] 
-    let 章节 = "";
-    let length = 0;
-    while( length < 3000 ){
-        let t = randomnum();
-        if(t < 5 && 章节.length > 200){
-            章节 = 增加段落(章节);
-            文章.push(章节); 
-            章节 = "";
-        }else if(t < 60){
-            let 句子 = 来点名人名言();
-            length = length + 句子.length;
-            章节 = 章节 + 句子;
-        }else{
-            let 句子 = 来点论述();
-            length = length + 句子.length;
-            章节 = 章节 + 句子;
-        }
-    }
-        章节 = 增加段落(章节);
-        文章.push(章节);
-    
-    let 排版 = "<div>" + 文章.join("</div><div>") + "</div>";
-    $("#论文").innerHTML = 排版;
-}
-
 </script>
+<head>
+	<meta charset="UTF-8">
+	
+</head>
 
-<body background="bg.gif">
+<body background="image/bg.gif">
 
-<font size="10" color="red">
-<div>须臾之所学 - 答疑解惑 - 暴躁版 :)</div><br>
-<font size="7">
-<a href="a.html">400字时评生成器</a>
-<font size="10" color="black">
-<div>你的问题：
-<input type="text" value="选择第3题为什么选C" name="non" style="width:600px; height:60px;font-size:56px; ">？</div>
-<font size="8" color="black">
-<div></div><button onclick="生成文章()" style="width:400px; height:60px;font-size:40px; " >解决这个问题（￥5）</button></div>
+<font size="15" color="black">
+<div>　　HOMEPAGE<br>WELCOME :)</div><br>
 
-<div id="论文"></div>
-</font>
-<font size="4" color="black"><br><br><br><br>
-<div>仅供娱乐，本站专为考生答疑。 如有建议请同作者联系。</div>
-<div>↓↓↓↓这只是测试功能，不要给我打钱，不然我还要打回去。:(</div></font>
-<img src="1.png" width="300" height="340" />
+
+<font size="15">
+<div>"MasterPiss!"</div>
+<a href="fps.html">[Windows](DEVELOPING)A Great FPS Boss Fighting Game</a><br><br>
+
+
+<font size="5">
+<div>And .. U can check these out!</div><br><br>
+<a href="OfflineDic.html">[Android]Collins Dictionary -- OFFLINE VERSION(recommended)</a><br><br>
+<a href="LetsMusic.html">[Android]LetsMusic</a><br><br>
+<a href="LrcMaker.html">[Windows]LrcMaker</a><br><br>
+
+
+
+
